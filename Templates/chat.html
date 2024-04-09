@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>Chat</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/chat.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>CHAT INTERFACE</h1>
+        <div class="user-chat-box">
+            <div class="user1-chat chat-box">
+                <h2>User 1</h2>
+                <form method="post" class="message-form" id="user1_message_form">
+                    {% csrf_token %}
+                    <input type="text" name="content" placeholder="Type your message...">
+                    <input type="hidden" name="sender" value="User 1">
+                    <input type="hidden" name="recipient" value="User 2">
+                    <input type="submit" value="Send">
+                    
+                </form>
+            </div>
+            <div class="user2-chat chat-box">
+                <h2>User 2</h2>
+                <form method="post" class="message-form" id="user2_message_form">
+                    {% csrf_token %}
+                    <input type="text" name="content" placeholder="Type your message...">
+                    <input type="hidden" name="sender" value="User 2">
+                    <input type="hidden" name="recipient" value="User 1">
+                    <input type="submit" value="Send">
+                </form>
+            </div>
+        </div>
+        <div class="conversation">
+            <h2>Conversation</h2>
+            <div id="conversation_chat_box" class="message-container">
+                {% for message in messages %}
+                    <p>{{ message.sender }}: {{ message.content }}</p>
+                {% endfor %}
+            </div>
+            <form method="post" class="message-form" action="{% url 'chat:clear_messages' %}">
+                {% csrf_token %}
+                <input type="submit" value="Clear All">
+            </form>
+        </div>
+    </div>
+</body>
+</html>
